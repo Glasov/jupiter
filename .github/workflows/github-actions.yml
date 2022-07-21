@@ -1,14 +1,26 @@
-name: Action
-on: [push]
+# Имя сценария
+name: Jupyter
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - run: sudo pip install jupyter_client
-    - run: sudo pip install nbconvert
-    - run: sudo pip install numpy
-    - run: sudo pip install matplotlib
-    - run: sudo pip install sklearn
-    - run: sudo python3 -m pip install ipykernel
-    - run: sudo python3 -m ipykernel install --user
-    - run: jupyter-nbconvert --execute ./Untitled.ipynb
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Python
+        uses: actions/setup-python@v4.0.0
+        with:
+          cache: pip
+          python-version: '3.7'
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+      - name: Exeute Notebook
+        run: jupyter-nbconvert --execute Untitled.ipynb --to html
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: Artifact
+          path: Untitled.html
