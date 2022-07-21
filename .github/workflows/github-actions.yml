@@ -2,6 +2,7 @@ name: Action
 on: [push]
 jobs:
   build:
+    runs-on: ubuntu-latest
     steps:
     - run: sudo pip install jupyter_client
     - run: sudo pip install nbconvert
@@ -11,5 +12,3 @@ jobs:
     - run: sudo python3 -m pip install ipykernel
     - run: sudo python3 -m ipykernel install --user
     - run: jupyter-nbconvert --execute ./Untitled.ipynb
-    - store_artifacts:
-      path: ./Untitled.html
